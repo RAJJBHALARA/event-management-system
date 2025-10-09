@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusFest 2025 - Register for an Event</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .form-card {
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .success-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            text-align: center;
+            z-index: 1000;
+        }
+        .success-popup .close-btn {
+            background-color: #7c3aed;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="antialiased d-flex flex-column min-vh-100">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 px-3 px-md-5 d-flex align-items-center justify-content-between sticky-top" style="z-index: 1000;">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-calendar-alt text-2xl text-purple-600 me-3" style="font-size: 1.5rem; color: #7c3aed;"></i>
+            <h1 class="h3 fw-bold text-gray-800 mb-0">CampusFest</h1>
+        </div>
+       <nav class="hidden md:flex items-center space-x-6">
+                <a href="home.html" class="text-purple-600 font-bold hover:text-purple-800 transition-colors duration-300">Home</a>
+                <a href="event.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Events</a>
+                <a href="schedule.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Schedule</a>
+                <a href="contact-us.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Contact</a>
+                <a href="login.html" class="text-white bg-purple-600 px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-300">Login</a>
+                <a href="sign-up.html" class="text-purple-600 border border-purple-600 px-4 py-2 rounded-lg hover:bg-purple-100 transition-colors duration-300">Register</a>
+            </nav>
+        <button id="mobile-menu-btn" class="d-md-none text-gray-600 btn border-0">
+            <i class="fas fa-bars fa-xl"></i>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center p-3">
+        <div class="card form-card p-4 p-md-5 w-100" style="max-width: 600px;">
+            <div class="card-body">
+                <h2 class="card-title text-center fw-bold text-gray-800 mb-4">Register for Event</h2>
+                <form id="event-register-form">
+                    <div class="mb-3">
+                        <label for="time-slot" class="form-label fw-medium text-gray-700">Select Time Slot</label>
+                        <select class="form-select rounded-lg" id="time-slot" required>
+                            <option selected disabled value="">Choose a time...</option>
+                            <option>09:00 AM</option>
+                            <option>10:30 AM</option>
+                            <option>02:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label fw-medium text-gray-700">Full Name</label>
+                        <input type="text" class="form-control rounded-lg" id="fullName" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-medium text-gray-700">Email address</label>
+                        <input type="email" class="form-control rounded-lg" id="email" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary fw-bold" style="background-color: #7c3aed; border-color: #7c3aed;">Register for Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Pop-up -->
+    <div id="success-popup" class="success-popup">
+        <i class="fas fa-check-circle text-green-500 text-6xl mb-4"></i>
+        <h3 class="font-bold text-gray-800 mb-2">Registration Successful!</h3>
+        <p class="text-gray-600">You have successfully registered for the event. We'll see you there!</p>
+        <button class="close-btn" onclick="document.getElementById('success-popup').style.display='none';">Close</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 px-3 px-md-5 text-center mt-auto">
+        <p class="mb-0">&copy; 2025 CampusFest. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('event-register-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('success-popup').style.display = 'block';
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>

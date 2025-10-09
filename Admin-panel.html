@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusFest Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #5b21b6; /* deep purple */
+            color: white;
+            border-radius: 0.5rem;
+        }
+        .nav-link {
+            transition: background-color 0.2s;
+        }
+        .stat-card, .content-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Hidden class to control page switching */
+        .page-view {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="flex h-screen bg-gray-100">
+        <!-- Mobile Menu Button (Top Left) -->
+        <button id="mobile-menu-open" class="md:hidden p-4 fixed top-0 left-0 z-40 text-gray-700">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-64 bg-gray-800 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:static md:shadow-xl flex flex-col">
+            <div class="flex items-center justify-between p-4 bg-gray-900 border-b border-gray-700">
+                <h2 class="text-xl font-bold">Admin Menu</h2>
+                <button id="mobile-menu-close" class="md:hidden text-white hover:text-gray-300">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-2 flex-1 overflow-y-auto">
+                <a href="#" data-page="dashboard" class="nav-link flex items-center space-x-3 p-3 text-sm font-medium active-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" data-page="registrations" class="nav-link flex items-center space-x-3 p-3 text-sm font-medium rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-user-check"></i>
+                    <span>View Registrations</span>
+                </a>
+                <a href="#" data-page="manage-events" class="nav-link flex items-center space-x-3 p-3 text-sm font-medium rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Events</span>
+                </a>
+                <a href="#" data-page="add-event" class="nav-link flex items-center space-x-3 p-3 text-sm font-medium rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-plus-square"></i>
+                    <span>Add New Event</span>
+                </a>
+                <a href="#" data-page="settings" class="nav-link flex items-center space-x-3 p-3 text-sm font-medium rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <!-- Logout Link - Links back to the client login page as requested -->
+                <a href="login.html" class="nav-link flex items-center space-x-3 p-3 text-sm font-medium rounded-lg text-red-400 hover:bg-gray-700">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 pt-16 md:pt-8">
+
+            <!-- 1. DASHBOARD VIEW -->
+            <div id="dashboard-view" class="page-view">
+                <header class="mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+                </header>
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Total Events Card -->
+                    <div class="bg-white p-6 rounded-xl stat-card border-l-4 border-purple-600">
+                        <p class="text-sm font-medium text-gray-500">Total Events</p>
+                        <p class="text-3xl font-extrabold text-gray-900 mt-1">12</p>
+                        <div class="flex items-center mt-2 text-sm text-purple-600">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            <span>Active and Upcoming</span>
+                        </div>
+                    </div>
+                    <!-- Total Registrations Card -->
+                    <div class="bg-white p-6 rounded-xl stat-card border-l-4 border-blue-500">
+                        <p class="text-sm font-medium text-gray-500">Total Registrations</p>
+                        <p class="text-3xl font-extrabold text-gray-900 mt-1">240</p>
+                        <div class="flex items-center mt-2 text-sm text-blue-500">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Across all events</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Content Placeholder (Chart/Table) -->
+                <div class="bg-white p-6 rounded-xl shadow-lg h-96 flex items-center justify-center">
+                    <p class="text-gray-400 text-xl font-medium">Chart / Table Placeholder for Analytics</p>
+                </div>
+            </div>
+
+            <!-- 2. REGISTRATIONS VIEW -->
+            <div id="registrations-view" class="page-view">
+                <header class="mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900">View Registrations</h1>
+                </header>
+                <!-- Registrations Table -->
+                <div class="bg-white rounded-xl content-card overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reg. ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#101</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Raj Bhalara</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Code Conquest</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-3" onclick="showRegViewModal('101', 'Raj Bhalara', 'Code Conquest')">View</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900" onclick="showRegDeleteModal('101')">Delete</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#102</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Aarav Patel</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Robo-Wars</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-3" onclick="showRegViewModal('102', 'Aarav Patel', 'Robo-Wars')">View</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900" onclick="showRegDeleteModal('102')">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. MANAGE EVENTS VIEW -->
+            <div id="manage-events-view" class="page-view">
+                <header class="mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900">Manage Events</h1>
+                </header>
+                <div class="bg-white rounded-xl content-card p-6">
+                    <!-- Add New Event Button -->
+                    <div class="mb-6 flex justify-end">
+                        <a href="#" data-page="add-event" class="nav-link inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-plus mr-2"></i>
+                            Add New Event
+                        </a>
+                    </div>
+                    <!-- Events Table -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Code Conquest</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Oct 28, 2025</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900 mr-3" onclick="showEventEditModal('Code Conquest', 'Oct 28, 2025', 'A 24-hour hackathon focusing on problem-solving and collaboration.')">Edit</a>
+                                        <a href="#" class="text-red-600 hover:text-red-900" onclick="showEventDeleteModal('Code Conquest', '1')">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Design Fusion</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Oct 29, 2025</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900 mr-3" onclick="showEventEditModal('Design Fusion', 'Oct 29, 2025', 'A workshop on modern UI/UX principles and design tools.')">Edit</a>
+                                        <a href="#" class="text-red-600 hover:text-red-900" onclick="showEventDeleteModal('Design Fusion', '2')">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. ADD/EDIT EVENT VIEW -->
+            <div id="add-event-view" class="page-view">
+                <header class="mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900">Add New Event</h1>
+                </header>
+                <div class="bg-white p-6 rounded-xl content-card max-w-2xl mx-auto">
+                    <form id="addEventForm">
+                        <div class="mb-4">
+                            <label for="addEventName" class="block text-sm font-medium text-gray-700 mb-1">Event Name</label>
+                            <input type="text" id="addEventName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" placeholder="e.g., Code Conquest" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="addEventDate" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" id="addEventDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="addEventDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea id="addEventDescription" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" placeholder="A brief description of the event..." required></textarea>
+                        </div>
+                        <div class="mb-6">
+                            <label for="addEventImageFile" class="block text-sm font-medium text-gray-700 mb-1">Event Image (Local File)</label>
+                            <input type="file" id="addEventImageFile" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                            <p class="text-xs text-gray-500 mt-1">Select an image from your computer to upload.</p>
+                        </div>
+                        <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-md">
+                            Save Event
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 5. SETTINGS VIEW -->
+            <div id="settings-view" class="page-view">
+                <header class="mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900">Settings</h1>
+                </header>
+                <div class="bg-white p-6 rounded-xl content-card max-w-2xl mx-auto">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Change Password</h2>
+                    <form>
+                        <div class="mb-4">
+                            <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                            <input type="password" id="currentPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                            <input type="password" id="newPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                        </div>
+                        <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-md">
+                            Update Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- --- Modals for Registrations View --- -->
+
+    <!-- Registration Delete Confirmation Modal -->
+    <div id="regDeleteConfirmationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
+            <h3 class="text-xl font-bold mb-4 text-red-600">Confirm Deletion</h3>
+            <p class="text-gray-700 mb-6">Are you sure you want to delete registration <span id="regIdToDelete" class="font-semibold text-gray-900"></span>? This action cannot be undone.</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="hideRegDeleteModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+                <button onclick="confirmRegDelete()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration View Details Modal -->
+    <div id="regViewDetailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-lg w-full">
+            <h3 class="text-xl font-bold mb-4 text-purple-600">Registration Details</h3>
+            <div class="space-y-3 text-gray-700">
+                <p><span class="font-semibold w-24 inline-block">Reg. ID:</span> <span id="viewRegId"></span></p>
+                <p><span class="font-semibold w-24 inline-block">Name:</span> <span id="viewName"></span></p>
+                <p><span class="font-semibold w-24 inline-block">Event:</span> <span id="viewEvent"></span></p>
+                <!-- Mock Data for comprehensive view -->
+                <p><span class="font-semibold w-24 inline-block">Time Slot:</span> <span id="viewTimeSlot">10:30 AM - 12:30 PM (Mock Data)</span></p>
+                <p><span class="font-semibold w-24 inline-block">Email:</span> <span id="viewEmail">raj@example.com (Mock Data)</span></p>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button onclick="hideRegViewModal()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- Modals for Manage Events View --- -->
+
+    <!-- Event Delete Confirmation Modal -->
+    <div id="eventDeleteConfirmationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
+            <h3 class="text-xl font-bold mb-4 text-red-600">Confirm Event Deletion</h3>
+            <p class="text-gray-700 mb-6">Are you sure you want to delete the event: <span id="eventNameToDelete" class="font-semibold text-gray-900"></span>? This action cannot be undone.</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="hideEventDeleteModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+                <button onclick="confirmEventDelete()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Edit Modal -->
+    <div id="eventEditModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50 overflow-y-auto">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-2xl w-full my-8 mx-4">
+            <h3 class="text-2xl font-bold mb-6 text-purple-600">Edit Event: <span id="editEventTitle"></span></h3>
+            <form id="editEventForm">
+                <input type="hidden" id="editEventId">
+                
+                <div class="mb-4">
+                    <label for="editEventName" class="block text-sm font-medium text-gray-700 mb-1">Event Name</label>
+                    <input type="text" id="editEventName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="editEventDate" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="text" id="editEventDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="editEventDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea id="editEventDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" required></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label for="editEventImageFile" class="block text-sm font-medium text-gray-700 mb-1">Event Image (Local File)</label>
+                    <input type="file" id="editEventImageFile" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                    <p class="text-xs text-gray-500 mt-1">Select an image from your computer to upload (re-upload needed for change).</p>
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="hideEventEditModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Global State & Sidebar Toggle (Mobile Responsiveness) ---
+        let currentRegId = null; 
+        let currentEventId = null;
+        let currentEventName = null;
+
+        const sidebar = document.getElementById('sidebar');
+        const openBtn = document.getElementById('mobile-menu-open');
+        const closeBtn = document.getElementById('mobile-menu-close');
+        const navLinks = document.querySelectorAll('.nav-link[data-page]');
+        const pageViews = document.querySelectorAll('.page-view');
+
+        // Toggle sidebar visibility for mobile
+        openBtn.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('shadow-2xl');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebar.classList.remove('shadow-2xl');
+        });
+
+        // --- Page Navigation Logic ---
+        const showPage = (pageId) => {
+            // Hide all pages
+            pageViews.forEach(view => {
+                view.style.display = 'none';
+            });
+
+            // Show the target page
+            const targetView = document.getElementById(pageId + '-view');
+            if (targetView) {
+                targetView.style.display = 'block';
+            }
+
+            // Update active link in sidebar
+            navLinks.forEach(link => {
+                link.classList.remove('active-link');
+                link.classList.add('hover:bg-gray-700');
+                if (link.dataset.page === pageId) {
+                    link.classList.add('active-link');
+                    link.classList.remove('hover:bg-gray-700');
+                }
+            });
+            
+            // Hide mobile sidebar after navigation
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        };
+
+        // Initialize by showing the Dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('dashboard');
+            // Attach navigation events to sidebar links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPage(e.currentTarget.dataset.page);
+                });
+            });
+
+            // Attach navigation events to the 'Add New Event' button within Manage Events
+            document.querySelector('#manage-events-view a[data-page="add-event"]').addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('add-event');
+            });
+
+            // Add Event Form Submission Mock
+            document.getElementById('addEventForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('addEventName').value;
+                showMessage(`New event '${name}' saved successfully (mock action).`, 'bg-green-500');
+                e.target.reset(); // Clear form
+                showPage('manage-events'); // Redirect to manage events after save (mock)
+            });
+
+            // Settings Form Submission Mock
+            document.querySelector('#settings-view form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showMessage(`Password updated successfully (mock action).`, 'bg-blue-500');
+                e.target.reset(); // Clear form
+            });
+        });
+
+
+        // --- Utility Function for Floating Messages ---
+        const showMessage = (text, bgColor) => {
+            const message = document.createElement('div');
+            message.textContent = text;
+            message.className = `fixed top-4 right-4 ${bgColor} text-white px-4 py-2 rounded-lg shadow-xl z-50 transition-opacity duration-300`;
+            document.body.appendChild(message);
+            setTimeout(() => {
+                message.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(message), 300);
+            }, 3000); 
+        };
+
+        // --- Registration Modal Functions ---
+        const showRegDeleteModal = (regId) => {
+            currentRegId = regId;
+            document.getElementById('regIdToDelete').textContent = '#' + regId;
+            document.getElementById('regDeleteConfirmationModal').classList.remove('hidden');
+            document.getElementById('regDeleteConfirmationModal').classList.add('flex');
+        };
+
+        const hideRegDeleteModal = () => {
+            document.getElementById('regDeleteConfirmationModal').classList.add('hidden');
+            document.getElementById('regDeleteConfirmationModal').classList.remove('flex');
+            currentRegId = null;
+        };
+
+        const confirmRegDelete = () => {
+            console.log('Confirmed deletion for Registration ID:', currentRegId);
+            showMessage('Registration #' + currentRegId + ' deleted successfully (mock action).', 'bg-red-600'); 
+            hideRegDeleteModal();
+        };
+
+        const showRegViewModal = (regId, name, event) => {
+            document.getElementById('viewRegId').textContent = '#' + regId;
+            document.getElementById('viewName').textContent = name;
+            document.getElementById('viewEvent').textContent = event;
+            document.getElementById('regViewDetailsModal').classList.remove('hidden');
+            document.getElementById('regViewDetailsModal').classList.add('flex');
+        };
+
+        const hideRegViewModal = () => {
+            document.getElementById('regViewDetailsModal').classList.add('hidden');
+            document.getElementById('regViewDetailsModal').classList.remove('flex');
+        };
+        
+        // --- Event Modal Functions ---
+        const showEventDeleteModal = (name, id) => {
+            currentEventName = name;
+            currentEventId = id;
+            document.getElementById('eventNameToDelete').textContent = name;
+            document.getElementById('eventDeleteConfirmationModal').classList.remove('hidden');
+            document.getElementById('eventDeleteConfirmationModal').classList.add('flex');
+        };
+
+        const hideEventDeleteModal = () => {
+            document.getElementById('eventDeleteConfirmationModal').classList.add('hidden');
+            document.getElementById('eventDeleteConfirmationModal').classList.remove('flex');
+            currentEventId = null;
+            currentEventName = null;
+        };
+
+        const confirmEventDelete = () => {
+            console.log(`Confirmed deletion for Event ID: ${currentEventId} (${currentEventName})`);
+            showMessage(`Event '${currentEventName}' deleted successfully (mock action).`, 'bg-red-600'); 
+            hideEventDeleteModal();
+        };
+
+        const showEventEditModal = (name, date, description) => {
+            document.getElementById('editEventTitle').textContent = name;
+            document.getElementById('editEventName').value = name;
+            document.getElementById('editEventDate').value = date;
+            document.getElementById('editEventDescription').value = description;
+            document.getElementById('editEventImageFile').value = ''; 
+            
+            document.getElementById('eventEditModal').classList.remove('hidden');
+            document.getElementById('eventEditModal').classList.add('flex');
+        };
+
+        const hideEventEditModal = () => {
+            document.getElementById('eventEditModal').classList.add('hidden');
+            document.getElementById('eventEditModal').classList.remove('flex');
+        };
+        
+        // Handle form submission for editing
+        document.getElementById('editEventForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('editEventName').value;
+            const fileInput = document.getElementById('editEventImageFile');
+            
+            if(fileInput.files.length > 0) {
+                console.log(`File selected for upload: ${fileInput.files[0].name}`);
+            }
+            
+            showMessage(`Event '${name}' updated successfully (mock action).`, 'bg-blue-500');
+            hideEventEditModal();
+        });
+    </script>
+</body>
+</html>
