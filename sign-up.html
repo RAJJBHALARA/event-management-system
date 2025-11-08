@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusFest 2025 - Register</title>
+    <title>CampusFest 2025 - Create Account</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -12,6 +12,8 @@
             background-color: #f3f4f6;
         }
     </style>
+    <!-- FIX: Placing the script here ensures validateSignupForm is defined before the form submits -->
+    <script src="auth.js"></script>
 </head>
 <body class="antialiased">
 
@@ -24,12 +26,12 @@
                 <h1 class="text-2xl font-bold text-gray-800">CampusFest</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-6">
-                <a href="home.html" class="text-purple-600 font-bold hover:text-purple-800 transition-colors duration-300">Home</a>
-                <a href="event.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Events</a>
+                <a href="index.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Home</a>
+                <a href="events.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Events</a>
                 <a href="schedule.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Schedule</a>
-                <a href="contact-us.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Contact</a>
+                <a href="contact.html" class="text-gray-600 hover:text-purple-600 transition-colors duration-300">Contact</a>
                 <a href="login.html" class="text-white bg-purple-600 px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-300">Login</a>
-                <a href="sign-up.html" class="text-purple-600 border border-purple-600 px-4 py-2 rounded-lg hover:bg-purple-100 transition-colors duration-300">Register</a>
+                <a href="signup.html" class="text-purple-600 border border-purple-600 px-4 py-2 rounded-lg hover:bg-purple-100 transition-colors duration-300">Register</a>
             </nav>
             <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-purple-600">
                 <i class="fas fa-bars text-2xl"></i>
@@ -40,18 +42,25 @@
         <main class="flex-grow flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-sm">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Create Account</h2>
-                <form id="register-form" class="space-y-4">
+                <!-- Form hooked to validation function -->
+                <form onsubmit="return validateSignupForm(event)" novalidate class="space-y-4">
                     <div>
-                        <label for="full-name" class="block text-gray-700 font-medium mb-1">Full Name</label>
-                        <input type="text" id="full-name" name="fullName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <label for="signup-fullname" class="block text-gray-700 font-medium mb-1">Full Name</label>
+                        <!-- ID and Name matched to auth.js -->
+                        <input type="text" id="signup-fullname" name="signup-fullname" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <!-- Error space for JS -->
                     </div>
                     <div>
-                        <label for="register-email" class="block text-gray-700 font-medium mb-1">Email</label>
-                        <input type="email" id="register-email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <label for="signup-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                        <!-- ID and Name matched to auth.js -->
+                        <input type="email" id="signup-email" name="signup-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <!-- Error space for JS -->
                     </div>
                     <div>
-                        <label for="register-password" class="block text-gray-700 font-medium mb-1">Password</label>
-                        <input type="password" id="register-password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <label for="signup-password" class="block text-gray-700 font-medium mb-1">Password</label>
+                        <!-- ID and Name matched to auth.js -->
+                        <input type="password" id="signup-password" name="signup-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <!-- Error space for JS -->
                     </div>
                     <button type="submit" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors duration-300">Sign Up</button>
                     <div class="text-center mt-4 text-sm">
